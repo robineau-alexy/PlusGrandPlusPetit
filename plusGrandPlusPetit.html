@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jeux petit grand</title>
+    <style>
+        #out {
+            width: 200px;
+            padding: 20px;
+            margin-top: 10px;
+            position: relative;
+            background-color: #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #out .nbCoups {
+            position: absolute;
+            border-radius: 5px;
+            top: -30px;
+            right: 0;
+            width: 100px;
+            padding: 4px;
+            background-color: #666666;
+            color: #fff;
+            transition: all .5s ease-in;
+        }
+
+        h1 {
+            font-variant: small-caps;
+            letter-spacing: 4px;
+            text-align: center;
+        }
+
+        input[value="RAZ"] {
+            display: none;
+        }
+
+        #horlogeDroite {
+            right: 20px;
+            top: 10px;
+            float: right;
+            font-family: "Trebuchet MS", Arial, sans-serif;
+            color: #FFF;
+            padding: 4px 3px 2px 5px;
+            font-size: .8em;
+            background-color: #333;
+            -webkit-box-shadow: 1px 1px 2px #000;
+            box-shadow: 1px 1px 2px #000;
+            animation-name: tictac;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+
+            position: absolute;
+            z-index: 3001;
+        }
+
+        @keyframes tictac {
+            0% {
+                transform: rotate(-5deg);
+                right: 13px;
+            }
+
+            50% {
+                transform: rotate(5deg);
+                right: 20px;
+            }
+
+            100% {
+                transform: rotate(-5deg);
+                right: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Jeux +Petit +Grand</h1>
+    <div class="ihm">
+        <input type="number" name="user" id="user" />
+        <input type="button" value="tester" onclick="testValue();" />
+        <input type="button" value="RAZ" onclick="raz();" />
+
+    </div>
+
+    <div id="out">
+        <div class="message">&nbsp;</div>
+        <div class="nbCoups">en 4 coups</div>
+    </div>
+
+    <section id="horlogeDroite">10:58:00</section>
+
+    <script>
+        let msg_div = document.querySelector('#out .message');
+        let divCoups = document.querySelector("#out .nbCoups");
+
+        // Math.random, génere un nombre aléatoire entre 0 et 1 (0.5645)
+        let ordinateur = Math.round(Math.random() * 50);
+
+        let nbCoups = 0;
+        console.log(ordinateur);
+
+        /*
+        Si l'utilisateur entre un nombre trop petit : on affiche : trop petit.
+        Si trop grand...
+        Si l'utilisateur trouve la bonne valeur, on écrit : Gagné en X coups.
+         */
+
+        function testValue() {
+            nbCoups++;
+            // 
+            let valeurUtilisateur = document.querySelector('#user').value;
+            console.log(valeurUtilisateur);
+
+            // est-ce que l'utilisateur à entré une valeur trop grande
+            if (valeurUtilisateur > ordinateur) {
+                msg_div.innerHTML = "Trop grand.";
+
+                // Sinon est-ce que l'utilisateur à entré une valeur trop pette
+            } else if (valeurUtilisateur < ordinateur) {
+                msg_div.innerHTML = "Trop Petit.";
+
+                // si ni plus petite, ni plus grande, c'est gagné.
+            } else {
+                msg_div.innerHTML = "Gagné";
+                // nbCoups
+                divCoups.style.top = 0;
+                divCoups.innerHTML = "en " + nbCoups + " coups";
+                // Sélectionne la balise input, qui à pour value "RAZ"
+                document.querySelector("input[value='RAZ']").style.display = "inline-block";
+            }
+        }
+
+        function raz() {
+            // disparaître le bouton RAZ
+            document.querySelector("input[value='RAZ']").style.display = "none";
+
+            // re générer une valeur aléatoire.
+            ordinateur = Math.round(Math.random() * 50);
+            console.log(ordinateur);
+
+            nbCoups = 0;
+
+            // Effacer les messages
+            msg_div.innerHTML = "&nbsp;"
+
+            divCoups.innerHTML = "";
+            divCoups.style.top = "-30px";
+
+            // on efface le champs Number
+            document.querySelector('#user').value = "";
+        }
+
+
+    </script>
+</body>
+
+</html>
